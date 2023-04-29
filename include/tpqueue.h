@@ -7,28 +7,28 @@
 template<typename T>
 class TPQueue {
  private:
-   sruct TPQItem {
-     T data;
-     TPQItem* next;
-     TPQItem* prev;
-   };
-   TPQItem* head;
-   TPQItem* tail;
-   TPQueue::TPQItem* createTPQItem(const T&);
+  struct QItem {
+    T data;
+    QItem* next;
+    QItem* prev;
+  };
+  QItem* head;
+  QItem* tail;
+  TPQueue::QItem* createQItem(const T&);
  public:
-    TPQueue() : head(nullptr), tail(nullptr) {}
+    TPQueue():head(nullptr), tail(nullptr) {}
     ~TPQueue();
     void push(const T&);
     T pop();
     void print() const;
 };
 
-typename TPQueue<T>::TPQItem* TPQueue<T>::createTPQItem(const T& data) {
-    TPQItem* tqitem = new TPQItem;
-    tqitem->data = data;
-    tqitem->next = nullptr;
-    tqitem->prev = nullptr;
-    return tqitem;
+typename TPQueue<T>::QItem* TPQueue<T>::createQItem(const T& data) {
+    QItem* item = new QItem;
+    item->data = data;
+    item->next = nullptr;
+    item->prev = nullptr;
+    return item;
 }
 
 template <typename T>
@@ -41,27 +41,27 @@ TPQueue<T>::~TPQueue() {
 template <typename T>
 void TPQueue<T>::push(const T& a) {
     if (head == nullptr) {
-        head = createTPQItem(a);
+        head = createQItem(a);
         tail = head;
     } else if (tail->data.prior >= a.prior) {
         if (tail->data.ch == a.ch) {
             tail->data = a;
         } else {
-            tail->next = createTPQItem(a);
+            tail->next = createQItem(a);
             tail->next->prev = tail;
             tail = tail->next;
         }
     } else if (head == tail) {
-        tail->prev = createQueueItem(a);
+        tail->prev = createQItem(a);
         head = tail->prev;
         head->next = tail;
     } else {
-        TPQItem* temp1 = tail;
+        QItem* temp1 = tail;
         while (temp1 != head && temp1->data.prior < a.prior) {
             temp1 = temp1->prev;
         }
         if (temp1->data.prior > a.prior) {
-            TPQItem* cell = new TPQItem;
+            QItem* cell = new QItem;
             cell->next = temp1->next;
             cell->prev = temp1;
             cell->data = a;
@@ -69,7 +69,7 @@ void TPQueue<T>::push(const T& a) {
             temp1->next = cell;
         }
         if (temp1 == head && temp1->data.prior < a.prior) {
-            head->prev = createTPQItem(a);
+            head->prev = createQItem(a);
             head = head->prev;
             head->next = temp1;
         }
@@ -81,7 +81,7 @@ T TPQueue<T>::pop() {
     if (!head) {
         throw std::string("EMPTY!");
     } else {
-        TPQItem* temp = head->next;
+        QItem* temp = head->next;
         T data = head->data;
         delete head;
         head = temp;
@@ -91,7 +91,7 @@ T TPQueue<T>::pop() {
 
 template <typename T>
 void TPQueue<T>::print() const {
-    TPQItem* temp = head;
+    QItem* temp = head;
     while (temp) {
         std::cout << temp->data.ch << temp->data.prior << " ";
         temp = temp->next;
