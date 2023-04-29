@@ -23,6 +23,7 @@ class TPQueue {
     void print() const;
 };
 
+template <typename T>
 typename TPQueue<T>::QItem* TPQueue<T>::createQItem(const T& data) {
     QItem* item = new QItem;
     item->data = data;
